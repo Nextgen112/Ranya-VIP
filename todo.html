@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List Application</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin: 10px 0; }
+        input[type="text"] { width: 200px; }
+        button { margin-left: 10px; }
+    </style>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <input type="text" id="todoInput" placeholder="Add a new task...">
+    <button id="addTodo">Add</button>
+    <ul id="todoList"></ul>
+
+    <script>
+        const todoInput = document.getElementById('todoInput');
+        const addTodoButton = document.getElementById('addTodo');
+        const todoList = document.getElementById('todoList');
+
+        // Load saved todos from local storage on page load
+        window.onload = function() {
+            const todos = JSON.parse(localStorage.getItem('todos')) || [];
+            todos.forEach(todo => addTodoToDOM(todo));
+        };
+
+        // Function to add a new todo
+        addTodoButton.addEventListener('click', function() {
+            const newTodo = todoInput.value;
+            if (newTodo) {
+                addTodoToDOM(newTodo);
+                saveTodoToLocalStorage(newTodo);
+                todoInput.value = '';
+            }
+        });
+
+        // Function to add todo to the DOM
+        function addTodoToDOM(todo) {
+            const listItem = document.createElement('li');
+            listItem.textContent = todo;
+            todoList.appendChild(listItem);
+        }
+
+        // Function to save todo to local storage
+        function saveTodoToLocalStorage(todo) {
+            const todos = JSON.parse(localStorage.getItem('todos')) || [];
+            todos.push(todo);
+            localStorage.setItem('todos', JSON.stringify(todos));
+        }
+    </script>
+</body>
+</html>
